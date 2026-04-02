@@ -38,12 +38,8 @@ public class ClientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ClientResponseDto> updateClient(@PathVariable Long id, @Valid @RequestBody ClientRequestDto clientDto) {
-        try {
-            ClientResponseDto updatedClient = clientService.updateClient(id, clientDto);
-            return ResponseEntity.ok(updatedClient);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        ClientResponseDto updatedClient = clientService.updateClient(id, clientDto);
+        return ResponseEntity.ok(updatedClient);
     }
 
     @DeleteMapping("/{id}")
