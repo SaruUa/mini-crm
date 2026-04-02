@@ -35,7 +35,7 @@
         background-color: #fafafa;
     }
 
-    a.button {
+    button, a.button {
         display: inline-block;
         margin-bottom: 20px;
         margin-right: 10px;
@@ -44,9 +44,12 @@
         color: white;
         text-decoration: none;
         border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px
     }
 
-    a.button:hover {
+    button:hover, a.button:hover {
         background-color: #1f57b8;
     }
   </style>
@@ -57,6 +60,11 @@
 
 <a class="button" href="/">На головну</a>
 <a class="button" href="/clients-page">До клієнтів</a>
+<a class="button" href="/managers-page/new">Додати менеджера</a>
+
+<form th:action="@{/import-clients}" method="post" style="display:inline;">
+  <button type="submit">Імпортувати клієнтів з API</button>
+</form>
 
 <table>
   <thead>
