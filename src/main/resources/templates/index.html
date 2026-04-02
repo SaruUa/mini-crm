@@ -3,14 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Mini CRM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            color: #222;
+        }
+
+        ul {
+            line-height: 1.9;
+        }
+
+        a {
+            color: #2d6cdf;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .box {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            max-width: 700px;
+        }
+    </style>
 </head>
 <body>
-<h1>Mini CRM працює</h1>
-<p>Доступні endpoint'и:</p>
-<ul>
-    <li>/api/managers</li>
-    <li>/api/clients</li>
-    <li>/api/interactions</li>
-</ul>
+
+<div class="box">
+    <h1>Mini CRM працює</h1>
+    <p>Доступні сторінки та endpoint-и:</p>
+
+    <ul>
+        <li><a href="/clients-page">Сторінка клієнтів</a></li>
+        <li><a href="/managers-page">Сторінка менеджерів</a></li>
+        <li><a href="/api/managers">API менеджерів</a></li>
+        <li><a href="/api/clients">API клієнтів</a></li>
+        <li><a href="/api/interactions">API взаємодій</a></li>
+    </ul>
+</div>
+
 </body>
 </html>

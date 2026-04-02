@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Список менеджерів</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background-color: #f7f7f7;
+    }
+
+    h1 {
+        color: #222;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f0f0f0;
+    }
+
+    tr:nth-child(even) {
+        background-color: #fafafa;
+    }
+
+    a.button {
+        display: inline-block;
+        margin-bottom: 20px;
+        margin-right: 10px;
+        padding: 10px 16px;
+        background-color: #2d6cdf;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+    }
+
+    a.button:hover {
+        background-color: #1f57b8;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Список менеджерів mini-CRM</h1>
+
+<a class="button" href="/">На головну</a>
+<a class="button" href="/clients-page">До клієнтів</a>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Ім’я</th>
+    <th>Прізвище</th>
+    <th>Email</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="manager : ${managers}">
+    <td th:text="${manager.id}"></td>
+    <td th:text="${manager.firstName}"></td>
+    <td th:text="${manager.lastName}"></td>
+    <td th:text="${manager.email}"></td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

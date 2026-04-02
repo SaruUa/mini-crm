@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Список клієнтів</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            color: #222;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        a.button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            background-color: #2d6cdf;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        a.button:hover {
+            background-color: #1f57b8;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Список клієнтів mini-CRM</h1>
+
+<a class="button" href="/">На головну</a>
+<a class="button" href="/managers-page">До менеджерів</a>
+<a class="button" href="/clients-page/new">Додати клієнта</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Повне ім’я</th>
+        <th>Email</th>
+        <th>Телефон</th>
+        <th>Компанія</th>
+        <th>Статус</th>
+        <th>ID менеджера</th>
+        <th>Менеджер</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.id}"></td>
+        <td th:text="${client.fullName}"></td>
+        <td th:text="${client.email}"></td>
+        <td th:text="${client.phone}"></td>
+        <td th:text="${client.company}"></td>
+        <td th:text="${client.status}"></td>
+        <td th:text="${client.managerId}"></td>
+        <td th:text="${client.managerName}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
