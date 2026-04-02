@@ -1,7 +1,9 @@
 package com.yehor.minicrm.controller;
 
-import com.yehor.minicrm.entity.Manager;
+import com.yehor.minicrm.dto.ManagerRequestDto;
+import com.yehor.minicrm.dto.ManagerResponseDto;
 import com.yehor.minicrm.service.ManagerService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,30 +20,27 @@ public class ManagerController {
     }
 
     @GetMapping
-    public List<Manager> getAllManagers() {
+    public List<ManagerResponseDto> getAllManagers() {
         return managerService.getAllManagers();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Manager> getManagerById(@PathVariable Long id) {
+    public ResponseEntity<ManagerResponseDto> getManagerById(@PathVariable Long id) {
         return managerService.getManagerById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Manager createManager(@RequestBody Manager manager) {
-        return managerService.createManager(manager);
+    public ManagerResponseDto createManager(@Valid @RequestBody ManagerRequestDto managerDto) {
+        return managerService.createManager(managerDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Manager> updateManager(@PathVariable Long id, @RequestBody Manager manager) {
-        try {
-            Manager updatedManager = managerService.updateManager(id, manager);
-            return ResponseEntity.ok(updatedManager);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ManagerResponseDto> updateManager(@PathVariable Long id,
+                                                            @Valid @RequestBody ManagerRequestDto managerDto) {
+        ManagerResponseDto updatedManager = managerService.updateManager(id, managerDto);
+        return ResponseEntity.ok(updatedManager);
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,7 @@
 package com.yehor.minicrm.service;
 
+import com.yehor.minicrm.dto.InteractionRequestDto;
+import com.yehor.minicrm.dto.InteractionResponseDto;
 import com.yehor.minicrm.entity.Client;
 import com.yehor.minicrm.entity.Interaction;
 import com.yehor.minicrm.repository.ClientRepository;
@@ -20,48 +22,66 @@ public class InteractionService {
         this.clientRepository = clientRepository;
     }
 
-    public List<Interaction> getAllInteractions() {
-        return interactionRepository.findAll();
+    public List<InteractionResponseDto> getAllInteractions() {
+        return interactionRepository.findAll().stream()
+                .map(this::mapToResponseDto)
+                .toList();
     }
 
-    public Optional<Interaction> getInteractionById(Long id) {
-        return interactionRepository.findById(id);
+    public Optional<InteractionResponseDto> getInteractionById(Long id) {
+        return interactionRepository.findById(id).map(this::mapToResponseDto);
     }
 
-    public List<Interaction> getInteractionsByClientId(Long clientId) {
-        return interactionRepository.findByClientId(clientId);
+    public List<InteractionResponseDto> getInteractionsByClientId(Long clientId) {
+        return interactionRepository.findByClientId(clientId).stream()
+                .map(this::mapToResponseDto)
+                .toList();
     }
 
-    public Interaction createInteraction(Interaction interaction) {
-        if (interaction.getClient() != null && interaction.getClient().getId() != null) {
-            Client client = clientRepository.findById(interaction.getClient().getId())
-                    .orElseThrow(() -> new RuntimeException("Client not found with id: " + interaction.getClient().getId()));
-            interaction.setClient(client);
-        } else {
-            throw new RuntimeException("Client is required for interaction");
-        }
+    public InteractionResponseDto createInteraction(InteractionRequestDto dto) {
+        Client client = clientRepository.findById(dto.getClientId())
+                .orElseThrow(() -> new RuntimeException("Client not found with id: " + dto.getClientId()));
 
-        return interactionRepository.save(interaction);
+        Interaction interaction = new Interaction();
+        interaction.setType(dto.getType());
+        interaction.setDescription(dto.getDescription());
+        interaction.setInteractionDate(dto.getInteractionDate());
+        interaction.setClient(client);
+
+        return mapToResponseDto(interactionRepository.save(interaction));
     }
 
-    public Interaction updateInteraction(Long id, Interaction updatedInteraction) {
+    public InteractionResponseDto updateInteraction(Long id, InteractionRequestDto dto) {
         Interaction existingInteraction = interactionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Interaction not found with id: " + id));
 
-        existingInteraction.setType(updatedInteraction.getType());
-        existingInteraction.setDescription(updatedInteraction.getDescription());
-        existingInteraction.setInteractionDate(updatedInteraction.getInteractionDate());
+        Client client = clientRepository.findById(dto.getClientId())
+                .orElseThrow(() -> new RuntimeException("Client not found with id: " + dto.getClientId()));
 
-        if (updatedInteraction.getClient() != null && updatedInteraction.getClient().getId() != null) {
-            Client client = clientRepository.findById(updatedInteraction.getClient().getId())
-                    .orElseThrow(() -> new RuntimeException("Client not found with id: " + updatedInteraction.getClient().getId()));
-            existingInteraction.setClient(client);
-        }
+        existingInteraction.setType(dto.getType());
+        existingInteraction.setDescription(dto.getDescription());
+        existingInteraction.setInteractionDate(dto.getInteractionDate());
+        existingInteraction.setClient(client);
 
-        return interactionRepository.save(existingInteraction);
+        return mapToResponseDto(interactionRepository.save(existingInteraction));
     }
 
     public void deleteInteraction(Long id) {
         interactionRepository.deleteById(id);
+    }
+
+    private InteractionResponseDto mapToResponseDto(Interaction interaction) {
+        InteractionResponseDto dto = new InteractionResponseDto();
+        dto.setId(interaction.getId());
+        dto.setType(interaction.getType());
+        dto.setDescription(interaction.getDescription());
+        dto.setInteractionDate(interaction.getInteractionDate());
+
+        if (interaction.getClient() != null) {
+            dto.setClientId(interaction.getClient().getId());
+            dto.setClientName(interaction.getClient().getFullName());
+        }
+
+        return dto;
     }
 }

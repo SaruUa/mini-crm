@@ -6,6 +6,7 @@ import com.yehor.minicrm.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.yehor.minicrm.entity.ClientStatus;
 
 import java.util.List;
 
@@ -46,5 +47,19 @@ public class ClientController {
     public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
         clientService.deleteClient(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/status/{status}")
+    public List<ClientResponseDto> getClientsByStatus(@PathVariable ClientStatus status) {
+        return clientService.getClientsByStatus(status);
+    }
+
+    @GetMapping("/manager/{managerId}")
+    public List<ClientResponseDto> getClientsByManagerId(@PathVariable Long managerId) {
+        return clientService.getClientsByManagerId(managerId);
+    }
+
+    @GetMapping("/search")
+    public List<ClientResponseDto> searchClientsByName(@RequestParam String name) {
+        return clientService.searchClientsByName(name);
     }
 }

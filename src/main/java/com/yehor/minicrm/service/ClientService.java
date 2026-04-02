@@ -32,6 +32,24 @@ public class ClientService {
         return clientRepository.findById(id).map(this::mapToResponseDto);
     }
 
+    public List<ClientResponseDto> getClientsByStatus(com.yehor.minicrm.entity.ClientStatus status) {
+        return clientRepository.findByStatus(status).stream()
+                .map(this::mapToResponseDto)
+                .toList();
+    }
+
+    public List<ClientResponseDto> getClientsByManagerId(Long managerId) {
+        return clientRepository.findByManagerId(managerId).stream()
+                .map(this::mapToResponseDto)
+                .toList();
+    }
+
+    public List<ClientResponseDto> searchClientsByName(String fullName) {
+        return clientRepository.findByFullNameContainingIgnoreCase(fullName).stream()
+                .map(this::mapToResponseDto)
+                .toList();
+    }
+
     public ClientResponseDto createClient(ClientRequestDto dto) {
         Client client = new Client();
         applyDtoToClient(client, dto);

@@ -1,7 +1,9 @@
 package com.yehor.minicrm.controller;
 
-import com.yehor.minicrm.entity.Interaction;
+import com.yehor.minicrm.dto.InteractionRequestDto;
+import com.yehor.minicrm.dto.InteractionResponseDto;
 import com.yehor.minicrm.service.InteractionService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,38 +20,32 @@ public class InteractionController {
     }
 
     @GetMapping
-    public List<Interaction> getAllInteractions() {
+    public List<InteractionResponseDto> getAllInteractions() {
         return interactionService.getAllInteractions();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Interaction> getInteractionById(@PathVariable Long id) {
+    public ResponseEntity<InteractionResponseDto> getInteractionById(@PathVariable Long id) {
         return interactionService.getInteractionById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/client/{clientId}")
-    public List<Interaction> getInteractionsByClientId(@PathVariable Long clientId) {
+    public List<InteractionResponseDto> getInteractionsByClientId(@PathVariable Long clientId) {
         return interactionService.getInteractionsByClientId(clientId);
     }
 
     @PostMapping
-    public ResponseEntity<Interaction> createInteraction(@RequestBody Interaction interaction) {
-        try {
-            return ResponseEntity.ok(interactionService.createInteraction(interaction));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public InteractionResponseDto createInteraction(@Valid @RequestBody InteractionRequestDto interactionDto) {
+        return interactionService.createInteraction(interactionDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Interaction> updateInteraction(@PathVariable Long id, @RequestBody Interaction interaction) {
-        try {
-            return ResponseEntity.ok(interactionService.updateInteraction(id, interaction));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<InteractionResponseDto> updateInteraction(@PathVariable Long id,
+                                                                    @Valid @RequestBody InteractionRequestDto interactionDto) {
+        InteractionResponseDto updatedInteraction = interactionService.updateInteraction(id, interactionDto);
+        return ResponseEntity.ok(updatedInteraction);
     }
 
     @DeleteMapping("/{id}")

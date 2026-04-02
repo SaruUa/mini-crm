@@ -9,4 +9,5 @@ import java.util.List;
 public interface ClientRepository extends JpaRepository<Client, Long> {
     List<Client> findByStatus(ClientStatus status);
     List<Client> findByManagerId(Long managerId);
+    List<Client> findByFullNameContainingIgnoreCase(String fullName);
 }
